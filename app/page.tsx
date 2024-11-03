@@ -20,8 +20,16 @@ export default function Chat() {
 
   const [messagesContainerRef, messagesEndRef] =
     useScrollToBottom<HTMLDivElement>();
+  const [weather, setWeather] = useState();
 
   const { messages, input, handleInputChange, handleSubmit, error } = useChat({
+    onFinish(message) {
+      message.toolInvocations?.forEach((m) => {
+        if (m.toolName === "weather" && m.state === "result") {
+          setWeather(m.result);
+        }
+      });
+    },
     body: { todos },
     onToolCall: ({ toolCall }) => {
       if (toolCall.toolName === "todo") {
@@ -105,11 +113,9 @@ export default function Chat() {
       </div>
       <div id="right" className="w-1/2 bg-zinc-100 dark:bg-zinc-900 px-12 py-8">
         <h2 className="text-xl font-semibold pb-2 animate-fadeIn">
-          My Todo List
+          Weather
         </h2>
-        {todos.map((todo, index) => (
-          <Todo key={index} todo={todo} />
-        ))}
+        <pre>{JSON.stringify(weather, null, 2)}</pre>
       </div>
     </div>
   );

@@ -19,4 +19,25 @@ export const tools = {
       "Interact with todo list. If the user says they've done something or say they need to do something, use this tool to either add a todo or mark a todo as done.",
     parameters: todoToolSchema,
   }),
+  weather: tool({
+    description: "Get the current weather at a location",
+    parameters: z.object({
+      latitude: z.number(),
+      longitude: z.number(),
+      city: z.string(),
+    }),
+    execute: async ({ latitude, longitude, city }) => {
+      const response = await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weathercode,relativehumidity_2m&timezone=auto`,
+      );
+
+      const weatherData = await response.json();
+      return {
+        temperature: weatherData.current.temperature_2m,
+        weatherCode: weatherData.current.weathercode,
+        humidity: weatherData.current.relativehumidity_2m,
+        city,
+      };
+    },
+  }),
 };
