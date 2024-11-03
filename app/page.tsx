@@ -33,23 +33,16 @@ export default function Chat() {
           return newTodo;
         }
 
-        if (type === "mark-done") {
+        if (type === "mark-done" || type === "update") {
           let updatedTodo = todos.find((todo) => todo.id === id);
           if (!updatedTodo) return "No todo found with that id";
-          updatedTodo = { ...updatedTodo, done: true };
-          setTodos((prevTodos) =>
-            prevTodos.map((todo) => (todo.id === id ? updatedTodo : todo)),
-          );
-          return updatedTodo;
-        }
-
-        if (type === "update") {
-          let updatedTodo = todos.find((todo) => todo.id === id);
-          if (!updatedTodo) return "No todo found with that id";
-          updatedTodo = {
-            ...updatedTodo,
-            content,
-          };
+          updatedTodo =
+            type === "mark-done"
+              ? { ...updatedTodo, done: true }
+              : {
+                  ...updatedTodo,
+                  content,
+                };
           setTodos((prevTodos) =>
             prevTodos.map((todo) => (todo.id === id ? updatedTodo : todo)),
           );
