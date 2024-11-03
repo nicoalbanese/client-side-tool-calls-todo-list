@@ -115,7 +115,11 @@ export default function Chat() {
         <h2 className="text-xl font-semibold pb-2 animate-fadeIn">
           Weather
         </h2>
-        <pre>{JSON.stringify(weather, null, 2)}</pre>
+        {weather ? (
+          <pre>{JSON.stringify(weather, null, 2)}</pre>
+        ) : (
+          <p>Try asking me about the weather somewhere!</p>
+        )}
       </div>
     </div>
   );
